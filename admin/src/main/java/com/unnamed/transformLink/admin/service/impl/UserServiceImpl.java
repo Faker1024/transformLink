@@ -24,4 +24,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         BeanUtils.copyProperties(userDO, result);
         return result;
     }
+
+
 }
