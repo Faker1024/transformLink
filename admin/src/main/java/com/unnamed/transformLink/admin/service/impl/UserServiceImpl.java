@@ -25,8 +25,7 @@ import static com.unnamed.transformLink.admin.comoon.enums.UserErrorCodeEnum.USE
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
 
-    private final RBloomFilter<String> cachePenetrationBloomFilter;
-    private final RBloomFilter userRegisterCachePenetrationBloomFilter;
+    private final RBloomFilter<String> userRegisterCachePenetrationBloomFilter;
 
     @Override
     public UserRespDTO getUserByUsername(String username) {
@@ -40,7 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public Boolean hasUserName(String username) {
-        return !cachePenetrationBloomFilter.contains(username);
+        return !userRegisterCachePenetrationBloomFilter.contains(username);
     }
 
     @Override
