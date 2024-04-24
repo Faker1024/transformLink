@@ -3,6 +3,7 @@ package com.unnamed.transformLink.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.unnamed.transformLink.admin.dao.entity.UserDO;
 import com.unnamed.transformLink.admin.dto.req.UserRegisterReqDTO;
+import com.unnamed.transformLink.admin.dto.req.UserUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
 
 /**
@@ -28,4 +29,10 @@ public interface UserService extends IService<UserDO> {
      * @param requestParam 注册用户请求参数
      */
     void Register(UserRegisterReqDTO requestParam);
+
+    /**
+     * 根据用户名更新用户信息
+     * @param requestParam 更新用户请求参数
+     */
+    void Update(UserUpdateReqDTO requestParam);
 }

@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.unnamed.transformLink.admin.comoon.convention.result.Result;
 import com.unnamed.transformLink.admin.comoon.convention.result.Results;
 import com.unnamed.transformLink.admin.dto.req.UserRegisterReqDTO;
+import com.unnamed.transformLink.admin.dto.req.UserUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserActualRespDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
 import com.unnamed.transformLink.admin.service.UserService;
@@ -49,6 +50,16 @@ public class UserController {
     @PostMapping("/api/transform-link/v1/user")
     public Result<Void> register(@RequestBody UserRegisterReqDTO requestParam){
         userService.Register(requestParam);
+        return Results.success();
+    }
+
+
+    /**
+     * 更新用户信息
+     */
+    @PutMapping("/api/transform-link/v1/user")
+    public Result<Void> update(@RequestBody UserUpdateReqDTO requestParam){
+        userService.Update(requestParam);
         return Results.success();
     }
 }

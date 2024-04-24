@@ -8,6 +8,7 @@ import com.unnamed.transformLink.admin.comoon.convention.exception.ClientExcepti
 import com.unnamed.transformLink.admin.dao.entity.UserDO;
 import com.unnamed.transformLink.admin.dao.mapper.UserMapper;
 import com.unnamed.transformLink.admin.dto.req.UserRegisterReqDTO;
+import com.unnamed.transformLink.admin.dto.req.UserUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
 import com.unnamed.transformLink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         }finally {
             lock.unlock();
         }
+    }
+
+    @Override
+    public void Update(UserUpdateReqDTO requestParam) {
+//        TODO 验证用户名是否为当前登录用户
+        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
+                .eq(UserDO::getUsername, requestParam.getUsername());
+        baseMapper.update(BeanUtil.toBean(requestParam, UserDO.class), queryWrapper);
     }
 
 
