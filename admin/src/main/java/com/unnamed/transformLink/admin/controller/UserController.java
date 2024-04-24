@@ -40,7 +40,7 @@ public class UserController {
      */
     @GetMapping("/api/transform-link/v1/user/has-username")
     public Result<Boolean> hasUserName(@RequestParam("username") String username) {
-        return Results.success(userService.hasUserName(username));
+        return Results.success(!userService.hasUserName(username));
     }
 
     /**

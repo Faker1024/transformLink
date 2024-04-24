@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 import static com.unnamed.transformLink.admin.comoon.constant.RedisCacheConstant.Lock_USER_REGISTER_KEY;
 import static com.unnamed.transformLink.admin.comoon.enums.UserErrorCodeEnum.USER_EXIST;
-import static com.unnamed.transformLink.admin.comoon.enums.UserErrorCodeEnum.USER_Name_EXIST;
+import static com.unnamed.transformLink.admin.comoon.enums.UserErrorCodeEnum.USER_NAME_EXIST;
 
 /**
  * 用户接口实现层
@@ -44,17 +44,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public Boolean hasUserName(String username) {
-        return !userRegisterCachePenetrationBloomFilter.contains(username);
+        return userRegisterCachePenetrationBloomFilter.contains(username);
     }
 
     @Override
     public void Register(UserRegisterReqDTO requestParam) {
         if (hasUserName(requestParam.getUsername())) {
-            throw  new ClientException(USER_Name_EXIST);
+            throw  new ClientException(USER_NAME_EXIST);
         }
         RLock lock = redissonClient.getLock(Strings.concat(Lock_USER_REGISTER_KEY, requestParam.getUsername()));
         try{
-            if (lock.tryLock()) throw new ClientException(USER_EXIST);
+            if (!lock.tryLock()) throw new ClientException(USER_EXIST);
             int inserted = baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
             if (inserted < 1) {
                 throw new ClientException(USER_EXIST);
@@ -63,8 +63,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         }finally {
             lock.unlock();
         }
-
-
     }
 
 
