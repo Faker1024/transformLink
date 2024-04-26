@@ -2,8 +2,11 @@ package com.unnamed.transformLink.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.unnamed.transformLink.admin.dao.entity.UserDO;
+import com.unnamed.transformLink.admin.dto.req.UserCheckLoginReqDTO;
+import com.unnamed.transformLink.admin.dto.req.UserLoginReqDTO;
 import com.unnamed.transformLink.admin.dto.req.UserRegisterReqDTO;
 import com.unnamed.transformLink.admin.dto.req.UserUpdateReqDTO;
+import com.unnamed.transformLink.admin.dto.resp.UserLoginRespDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
 
 /**
@@ -35,4 +38,19 @@ public interface UserService extends IService<UserDO> {
      * @param requestParam 更新用户请求参数
      */
     void Update(UserUpdateReqDTO requestParam);
+
+    /**
+     * 登录用户
+     *
+     * @param requestParam 请求参数
+     * @return 返回用户登录实体
+     */
+    UserLoginRespDTO Login(UserLoginReqDTO requestParam);
+
+    /**
+     * 检查用户是否登录
+     * @param requestParam 请求参数
+     * @return 登录为true
+     */
+    Boolean checkLogin(UserCheckLoginReqDTO requestParam);
 }

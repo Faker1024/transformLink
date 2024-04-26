@@ -5,4 +5,6 @@ package com.unnamed.transformLink.admin.comoon.constant;
  */
 public class RedisCacheConstant {
     public static final String Lock_USER_REGISTER_KEY = "transform-link:lock_user_register:";
+    public static final String Login_USER_KEY = "transform-link:login:";
+
 }
