@@ -8,10 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.unnamed.transformLink.admin.comoon.convention.exception.ClientException;
 import com.unnamed.transformLink.admin.dao.entity.UserDO;
 import com.unnamed.transformLink.admin.dao.mapper.UserMapper;
-import com.unnamed.transformLink.admin.dto.req.UserCheckLoginReqDTO;
-import com.unnamed.transformLink.admin.dto.req.UserLoginReqDTO;
-import com.unnamed.transformLink.admin.dto.req.UserRegisterReqDTO;
-import com.unnamed.transformLink.admin.dto.req.UserUpdateReqDTO;
+import com.unnamed.transformLink.admin.dto.req.*;
 import com.unnamed.transformLink.admin.dto.resp.UserLoginRespDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
 import com.unnamed.transformLink.admin.service.UserService;
@@ -80,6 +77,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public void Update(UserUpdateReqDTO requestParam) {
 //        TODO 验证用户名是否为当前登录用户
+
         String json = stringRedisTemplate.opsForValue().get(requestParam.getToken());
         UserDO userDO = JSON.parseObject(json, UserDO.class);
         assert userDO != null;
@@ -116,6 +114,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public Boolean checkLogin(UserCheckLoginReqDTO requestParam) {
         return stringRedisTemplate.opsForHash().hasKey(Login_USER_KEY + requestParam.getUsername(), requestParam.getToken());
+    }
+
+    @Override
+    public void logout(UserLogoutReqDTO requestParam) {
+        stringRedisTemplate.opsForHash().delete(Login_USER_KEY+ requestParam.getUsername(), requestParam.getToken());
     }
 
 

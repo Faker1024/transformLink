@@ -3,10 +3,7 @@ package com.unnamed.transformLink.admin.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.unnamed.transformLink.admin.comoon.convention.result.Result;
 import com.unnamed.transformLink.admin.comoon.convention.result.Results;
-import com.unnamed.transformLink.admin.dto.req.UserCheckLoginReqDTO;
-import com.unnamed.transformLink.admin.dto.req.UserLoginReqDTO;
-import com.unnamed.transformLink.admin.dto.req.UserRegisterReqDTO;
-import com.unnamed.transformLink.admin.dto.req.UserUpdateReqDTO;
+import com.unnamed.transformLink.admin.dto.req.*;
 import com.unnamed.transformLink.admin.dto.resp.UserActualRespDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserLoginRespDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
@@ -77,5 +74,14 @@ public class UserController {
     @GetMapping("/api/transform-link/v1/user/check-login")
     public Result<Boolean> checkLogin(UserCheckLoginReqDTO requestParam){
         return Results.success(userService.checkLogin(requestParam));
+    }
+
+    /**
+     * 检查用户是否登录
+     */
+    @DeleteMapping("/api/transform-link/v1/user")
+    public Result<Void> logout(UserLogoutReqDTO requestParam){
+        userService.logout(requestParam);
+        return Results.success();
     }
 }
