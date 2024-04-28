@@ -13,6 +13,7 @@ import com.unnamed.transformLink.admin.dto.resp.UserLoginRespDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
 import com.unnamed.transformLink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
@@ -32,6 +33,7 @@ import static com.unnamed.transformLink.admin.comoon.enums.UserErrorCodeEnum.*;
 /**
  * 用户接口实现层
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
