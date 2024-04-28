@@ -106,11 +106,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
          *      value:userInfo
          */
         String loginKey = Login_USER_KEY + requestParam.getUsername();
-//        Map<Object, Object> loginMap = stringRedisTemplate.opsForHash().entries(loginKey);
         String uuid = UUID.randomUUID().toString();
-        // TODO 执行lua脚本
-        Boolean execute = stringRedisTemplate.execute(userLoginRedisScript, null, loginKey, uuid, String.valueOf(System.currentTimeMillis()));
-        if (!execute) System.out.println("执行失败");
+        stringRedisTemplate.execute(userLoginRedisScript, null, loginKey, uuid, String.valueOf(System.currentTimeMillis()));
         return new UserLoginRespDTO(uuid);
     }
 
