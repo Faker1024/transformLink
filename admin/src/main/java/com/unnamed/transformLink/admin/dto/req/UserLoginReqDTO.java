@@ -7,7 +7,6 @@ import lombok.Data;
  */
 @Data
 public class UserLoginReqDTO {
-
     /**
      * 用户名称
      */
