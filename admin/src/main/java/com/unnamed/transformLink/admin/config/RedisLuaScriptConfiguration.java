@@ -6,6 +6,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 
+import static com.unnamed.transformLink.admin.comoon.constant.RedisLuaConstant.LOGIN_OUT_USER_PATH;
 import static com.unnamed.transformLink.admin.comoon.constant.RedisLuaConstant.LOGIN_USER_PATH;
 
 /**
@@ -18,6 +19,14 @@ public class RedisLuaScriptConfiguration {
     public DefaultRedisScript<Boolean> loginUserScript(){
         DefaultRedisScript redisScript = new DefaultRedisScript();
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_USER_PATH)));
+        redisScript.setResultType(Boolean.class);
+        return redisScript;
+    }
+
+    @Bean("userLoginOutRedisScript")
+    public DefaultRedisScript<Boolean> loginOutUserScript(){
+        DefaultRedisScript redisScript = new DefaultRedisScript();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_OUT_USER_PATH)));
         redisScript.setResultType(Boolean.class);
         return redisScript;
     }

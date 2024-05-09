@@ -4,15 +4,18 @@
 --      key:token
 --      value:时间戳
 
-local hKey = tostring(ARGV[1])
+local hKey =  tostring(ARGV[1])
+local key = hKey .. 'info'
 local token = tostring(ARGV[2])
 --local timestamp = tonumber(ARGV[3])
 local stringTime = tostring(ARGV[3])
+local userInfo = tostring(ARGV[4])
 
 --检查是否存在
 local exists = redis.call('EXISTS', hKey)
 if exists == 0 then
     redis.call('HSET', hKey, token, stringTime)
+    redis.call('SET', key, userInfo)
     return 0
 end
 local tokenCount = redis.call('HLEN', hKey)

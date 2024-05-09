@@ -1,6 +1,7 @@
 package com.unnamed.transformLink.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -42,6 +43,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private final RedissonClient redissonClient;
     private final StringRedisTemplate stringRedisTemplate;
     private final DefaultRedisScript<Boolean> userLoginRedisScript;
+    private final DefaultRedisScript<Boolean> userLoginOutRedisScript;
 
     @Override
     public UserRespDTO getUserByUsername(String username) {
@@ -107,7 +109,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
          */
         String loginKey = Login_USER_KEY + requestParam.getUsername();
         String uuid = UUID.randomUUID().toString();
-        stringRedisTemplate.execute(userLoginRedisScript, null, loginKey, uuid, String.valueOf(System.currentTimeMillis()));
+        stringRedisTemplate.execute(userLoginRedisScript, null, loginKey, uuid, String.valueOf(System.currentTimeMillis()), JSONUtil.parse(userDO).toString());
         return new UserLoginRespDTO(uuid);
     }
 
@@ -120,7 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public void logout(UserLogoutReqDTO requestParam) {
-        stringRedisTemplate.opsForHash().delete(Login_USER_KEY+ requestParam.getUsername(), requestParam.getToken());
+        stringRedisTemplate.execute(userLoginOutRedisScript, null, Login_USER_KEY+requestParam.getUsername(), requestParam.getToken());
     }
 
 

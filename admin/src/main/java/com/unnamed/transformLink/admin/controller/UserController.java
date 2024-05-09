@@ -63,6 +63,9 @@ public class UserController {
         return Results.success();
     }
 
+    /**
+     * 登录用户
+     */
     @PostMapping("/api/transform-link/v1/user/login")
     public Result<UserLoginRespDTO> login(@RequestBody UserLoginReqDTO requestParam){
         return Results.success(userService.Login(requestParam));
@@ -77,7 +80,7 @@ public class UserController {
     }
 
     /**
-     * 检查用户是否登录
+     * 注销用户
      */
     @DeleteMapping("/api/transform-link/v1/user")
     public Result<Void> logout(UserLogoutReqDTO requestParam){
