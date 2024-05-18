@@ -6,6 +6,7 @@ public enum BaseErrorCode implements IErrorCode {
 
     // ========== 一级宏观错误码 客户端错误 ==========
     CLIENT_ERROR("A000001", "用户端错误"),
+    PARAM_ERROR("A000002", "参数异常"),
 
     // ========== 二级宏观错误码 用户注册错误 ==========
     USER_REGISTER_ERROR("A000100", "用户注册错误"),

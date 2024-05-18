@@ -4,13 +4,11 @@ package com.unnamed.transformLink.admin.controller;
 import com.unnamed.transformLink.admin.comoon.convention.result.Result;
 import com.unnamed.transformLink.admin.comoon.convention.result.Results;
 import com.unnamed.transformLink.admin.dto.req.GroupSaveReqDTO;
+import com.unnamed.transformLink.admin.dto.req.GroupUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.GroupSearchRespDTO;
 import com.unnamed.transformLink.admin.service.GroupService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,16 +21,32 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    /**
+     * 新增组名
+     */
     @PostMapping("/api/transform-link/v1/group")
     public Result<Void> save(@RequestBody GroupSaveReqDTO requestParam){
         groupService.saveGroup(requestParam);
         return Results.success();
     }
 
+    /**
+     *  查询个人所拥有的分组名称
+     */
     @GetMapping("/api/transform-link/v1/group")
     public Result<List<GroupSearchRespDTO>> search(){
         return Results.success(groupService.searchGroup());
     }
+
+    /**
+     * 更新分组信息
+     */
+    @PutMapping("/api/transform-link/v1/group")
+    public Result<Void> update(@RequestBody GroupUpdateReqDTO requestParam){
+        groupService.updateGroup(requestParam);
+        return Results.success();
+    }
+
 
 
 }
