@@ -47,6 +47,14 @@ public class GroupController {
         return Results.success();
     }
 
+    /**
+     * 删除分组
+     */
+    @DeleteMapping("/api/transform-link/v1/group")
+    public Result<Boolean> delete(@RequestParam String gid){
+        return Results.success(groupService.deleteGroup(gid));
+    }
+
 
 
 }

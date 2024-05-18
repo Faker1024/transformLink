@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -60,6 +61,17 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
                 .eq(GroupDO::getDelFlag, 0);
         GroupDO groupDO = GroupDO.builder().name(requestParam.getName()).build();
         baseMapper.update(groupDO, wrapper);
+    }
+
+    @Override
+    public Boolean deleteGroup(String gid) {
+        String username = UserContext.getUsername();
+        LambdaUpdateWrapper<GroupDO> wrapper = Wrappers.lambdaUpdate(GroupDO.class)
+                .eq(GroupDO::getUsername, username)
+                .eq(GroupDO::getGid, gid)
+                .eq(GroupDO::getDelFlag, 0);
+        GroupDO groupDO = (GroupDO) new GroupDO().setDelFlag(1).setUpdateTime(new Date());
+        return baseMapper.update(groupDO, wrapper) > 0;
     }
 
     private boolean hasGid(String gid) {

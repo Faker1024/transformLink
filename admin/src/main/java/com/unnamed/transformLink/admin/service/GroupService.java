@@ -27,4 +27,6 @@ public interface GroupService extends IService<GroupDO> {
     List<GroupSearchRespDTO> searchGroup();
 
     void updateGroup(GroupUpdateReqDTO requestParam);
+
+    Boolean deleteGroup(String gid);
 }

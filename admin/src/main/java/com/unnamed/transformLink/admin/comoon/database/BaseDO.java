@@ -3,10 +3,12 @@ package com.unnamed.transformLink.admin.comoon.database;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
 @Data
+@Accessors(chain = true)
 public class BaseDO {
 
     /**
