@@ -28,13 +28,13 @@ public interface UserService extends IService<UserDO> {
      * 注册用户
      * @param requestParam 注册用户请求参数
      */
-    void Register(UserRegisterReqDTO requestParam);
+    void register(UserRegisterReqDTO requestParam);
 
     /**
      * 根据用户名更新用户信息
      * @param requestParam 更新用户请求参数
      */
-    void Update(UserUpdateReqDTO requestParam);
+    void update(UserUpdateReqDTO requestParam);
 
     /**
      * 登录用户
@@ -42,7 +42,7 @@ public interface UserService extends IService<UserDO> {
      * @param requestParam 请求参数
      * @return 返回用户登录实体
      */
-    UserLoginRespDTO Login(UserLoginReqDTO requestParam);
+    UserLoginRespDTO login(UserLoginReqDTO requestParam);
 
     /**
      * 检查用户是否登录

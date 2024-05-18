@@ -12,7 +12,7 @@ public class UserRespDTO {
     /**
      * id
      */
-    private Long id;
+    private String id;
 
     /**
      * 用户名

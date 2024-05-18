@@ -6,8 +6,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 
-import static com.unnamed.transformLink.admin.comoon.constant.RedisLuaConstant.LOGIN_OUT_USER_PATH;
-import static com.unnamed.transformLink.admin.comoon.constant.RedisLuaConstant.LOGIN_USER_PATH;
+import static com.unnamed.transformLink.admin.comoon.constant.RedisLuaConstant.*;
 
 /**
  * redis lua 脚本配置
@@ -18,7 +17,7 @@ public class RedisLuaScriptConfiguration {
     @Bean("userLoginRedisScript")
     public DefaultRedisScript<Boolean> loginUserScript(){
         DefaultRedisScript redisScript = new DefaultRedisScript();
-        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_USER_PATH)));
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_USER)));
         redisScript.setResultType(Boolean.class);
         return redisScript;
     }
@@ -26,7 +25,15 @@ public class RedisLuaScriptConfiguration {
     @Bean("userLoginOutRedisScript")
     public DefaultRedisScript<Boolean> loginOutUserScript(){
         DefaultRedisScript redisScript = new DefaultRedisScript();
-        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_OUT_USER_PATH)));
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_OUT_USER)));
+        redisScript.setResultType(Boolean.class);
+        return redisScript;
+    }
+
+    @Bean("checkUserInfoRedisScript")
+    public DefaultRedisScript<Boolean> getUserInfoScript(){
+        DefaultRedisScript redisScript = new DefaultRedisScript();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(CHECK_USER_INFO)));
         redisScript.setResultType(Boolean.class);
         return redisScript;
     }

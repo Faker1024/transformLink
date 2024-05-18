@@ -49,7 +49,7 @@ public class UserController {
      */
     @PostMapping("/api/transform-link/v1/user")
     public Result<Void> register(@RequestBody UserRegisterReqDTO requestParam){
-        userService.Register(requestParam);
+        userService.register(requestParam);
         return Results.success();
     }
 
@@ -59,7 +59,7 @@ public class UserController {
      */
     @PutMapping("/api/transform-link/v1/user")
     public Result<Void> update(@RequestBody UserUpdateReqDTO requestParam){
-        userService.Update(requestParam);
+        userService.update(requestParam);
         return Results.success();
     }
 
@@ -68,7 +68,7 @@ public class UserController {
      */
     @PostMapping("/api/transform-link/v1/user/login")
     public Result<UserLoginRespDTO> login(@RequestBody UserLoginReqDTO requestParam){
-        return Results.success(userService.Login(requestParam));
+        return Results.success(userService.login(requestParam));
     }
 
     /**
