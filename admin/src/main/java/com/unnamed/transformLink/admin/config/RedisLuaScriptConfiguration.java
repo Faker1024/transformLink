@@ -16,7 +16,7 @@ public class RedisLuaScriptConfiguration {
 
     @Bean("userLoginRedisScript")
     public DefaultRedisScript<Boolean> loginUserScript(){
-        DefaultRedisScript redisScript = new DefaultRedisScript();
+        DefaultRedisScript<Boolean> redisScript = new DefaultRedisScript<Boolean>();
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_USER)));
         redisScript.setResultType(Boolean.class);
         return redisScript;
@@ -24,7 +24,7 @@ public class RedisLuaScriptConfiguration {
 
     @Bean("userLoginOutRedisScript")
     public DefaultRedisScript<Boolean> loginOutUserScript(){
-        DefaultRedisScript redisScript = new DefaultRedisScript();
+        DefaultRedisScript<Boolean> redisScript = new DefaultRedisScript<Boolean>();
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LOGIN_OUT_USER)));
         redisScript.setResultType(Boolean.class);
         return redisScript;
@@ -32,7 +32,7 @@ public class RedisLuaScriptConfiguration {
 
     @Bean("checkUserInfoRedisScript")
     public DefaultRedisScript<Boolean> getUserInfoScript(){
-        DefaultRedisScript redisScript = new DefaultRedisScript();
+        DefaultRedisScript<Boolean> redisScript = new DefaultRedisScript<Boolean>();
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(CHECK_USER_INFO)));
         redisScript.setResultType(Boolean.class);
         return redisScript;

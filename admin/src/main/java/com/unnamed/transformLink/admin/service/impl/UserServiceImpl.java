@@ -24,6 +24,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.unnamed.transformLink.admin.comoon.constant.RedisCacheConstant.Lock_USER_REGISTER_KEY;
@@ -85,7 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         String json = stringRedisTemplate.opsForValue().get(requestParam.getToken());
         UserDO userDO = JSON.parseObject(json, UserDO.class);
         assert userDO != null;
-        if (userDO.getUsername() != requestParam.getUsername()) {
+        if (!Objects.equals(userDO.getUsername(), requestParam.getUsername())) {
             throw new ClientException(CLIENT_ERROR);
         }
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
@@ -113,7 +114,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
          */
         String loginKey = Login_USER_KEY + requestParam.getUsername();
         String uuid = UUID.randomUUID().toString();
-        stringRedisTemplate.execute(userLoginRedisScript, null, loginKey, uuid, String.valueOf((long)System.currentTimeMillis()/1000), JSONUtil.parse(userDO).toString());
+        stringRedisTemplate.execute(userLoginRedisScript, null, loginKey, uuid, String.valueOf(System.currentTimeMillis()/1000), JSONUtil.parse(userDO).toString());
         return new UserLoginRespDTO(uuid);
     }
 
