@@ -3,6 +3,7 @@ package com.unnamed.transformLink.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.unnamed.transformLink.admin.dao.entity.GroupDO;
 import com.unnamed.transformLink.admin.dto.req.GroupSaveReqDTO;
+import com.unnamed.transformLink.admin.dto.req.GroupSortReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.GroupSearchRespDTO;
 
@@ -29,4 +30,6 @@ public interface GroupService extends IService<GroupDO> {
     void updateGroup(GroupUpdateReqDTO requestParam);
 
     Boolean deleteGroup(String gid);
+
+    void sortGroup(List<GroupSortReqDTO> requestParam);
 }

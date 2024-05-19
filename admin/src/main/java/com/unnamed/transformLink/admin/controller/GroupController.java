@@ -4,6 +4,7 @@ package com.unnamed.transformLink.admin.controller;
 import com.unnamed.transformLink.admin.comoon.convention.result.Result;
 import com.unnamed.transformLink.admin.comoon.convention.result.Results;
 import com.unnamed.transformLink.admin.dto.req.GroupSaveReqDTO;
+import com.unnamed.transformLink.admin.dto.req.GroupSortReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.GroupSearchRespDTO;
 import com.unnamed.transformLink.admin.service.GroupService;
@@ -53,6 +54,14 @@ public class GroupController {
     @DeleteMapping("/api/transform-link/v1/group")
     public Result<Boolean> delete(@RequestParam String gid){
         return Results.success(groupService.deleteGroup(gid));
+    }
+
+    /**
+     * 短连接分组排序
+     */
+    @PostMapping("/api/transform-link/v1/group/sort")
+    public  Result<Void> sortGroup(@RequestBody List<GroupSortReqDTO> requestParam){
+        return Results.success(groupService.sortGroup(requestParam));
     }
 
 

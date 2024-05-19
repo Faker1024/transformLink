@@ -8,6 +8,7 @@ import com.unnamed.transformLink.admin.comoon.biz.user.UserContext;
 import com.unnamed.transformLink.admin.dao.entity.GroupDO;
 import com.unnamed.transformLink.admin.dao.mapper.GroupMapper;
 import com.unnamed.transformLink.admin.dto.req.GroupSaveReqDTO;
+import com.unnamed.transformLink.admin.dto.req.GroupSortReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.GroupSearchRespDTO;
 import com.unnamed.transformLink.admin.service.GroupService;
@@ -27,6 +28,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
+
+    private GroupMapper groupMapper;
 
     @Override
     public void saveGroup(GroupSaveReqDTO requestParam) {
@@ -72,6 +75,21 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
                 .eq(GroupDO::getDelFlag, 0);
         GroupDO groupDO = (GroupDO) new GroupDO().setDelFlag(1).setUpdateTime(new Date());
         return baseMapper.update(groupDO, wrapper) > 0;
+    }
+
+    @Override
+    public void sortGroup(List<GroupSortReqDTO> requestParam) {
+        requestParam.stream().forEach(param -> {
+            GroupDO groupDO = GroupDO.builder()
+                    .gid(param.getGid())
+                    .sortOrder(param.getSortOrder())
+                    .build();
+            LambdaUpdateWrapper<GroupDO> wrapper = Wrappers.lambdaUpdate(GroupDO.class)
+                    .eq(GroupDO::getUsername, UserContext.getUsername())
+                    .eq(GroupDO::getGid, groupDO.getGid())
+                    .set(GroupDO::getDelFlag, 1);
+            baseMapper.update(groupDO, wrapper);
+        });
     }
 
     private boolean hasGid(String gid) {
