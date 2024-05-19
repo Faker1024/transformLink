@@ -23,7 +23,7 @@ public class UserController {
     /**
      * 根据用户名查询信息
      */
-    @GetMapping("/api/transform-link/v1/user/{username}")
+    @GetMapping("/api/transform-link/admin/v1/user/{username}")
     public Result<UserRespDTO> getUserByUsername(@PathVariable("username") String username) {
         return Results.success(userService.getUserByUsername(username));
     }
@@ -31,7 +31,7 @@ public class UserController {
     /**
      * 根据用户名查询信息
      */
-    @GetMapping("/api/transform-link/v1/actual/user/{username}")
+    @GetMapping("/api/transform-link/admin/v1/actual/user/{username}")
     public Result<UserActualRespDTO> getActualUserByUsername(@PathVariable("username") String username) {
         return Results.success(BeanUtil.toBean(userService.getUserByUsername(username), UserActualRespDTO.class));
     }
@@ -39,7 +39,7 @@ public class UserController {
     /**
      * 查询用户名是否存在
      */
-    @GetMapping("/api/transform-link/v1/user/has-username")
+    @GetMapping("/api/transform-link/admin/v1/user/has-username")
     public Result<Boolean> hasUserName(@RequestParam("username") String username) {
         return Results.success(!userService.hasUserName(username));
     }
@@ -47,7 +47,7 @@ public class UserController {
     /**
      * 注册用户
      */
-    @PostMapping("/api/transform-link/v1/user")
+    @PostMapping("/api/transform-link/admin/v1/user")
     public Result<Void> register(@RequestBody UserRegisterReqDTO requestParam){
         userService.register(requestParam);
         return Results.success();
@@ -57,7 +57,7 @@ public class UserController {
     /**
      * 更新用户信息
      */
-    @PutMapping("/api/transform-link/v1/user")
+    @PutMapping("/api/transform-link/admin/v1/user")
     public Result<Void> update(@RequestBody UserUpdateReqDTO requestParam){
         userService.update(requestParam);
         return Results.success();
@@ -66,7 +66,7 @@ public class UserController {
     /**
      * 登录用户
      */
-    @PostMapping("/api/transform-link/v1/user/login")
+    @PostMapping("/api/transform-link/admin/v1/user/login")
     public Result<UserLoginRespDTO> login(@RequestBody UserLoginReqDTO requestParam){
         return Results.success(userService.login(requestParam));
     }
@@ -74,7 +74,7 @@ public class UserController {
     /**
      * 检查用户是否登录
      */
-    @GetMapping("/api/transform-link/v1/user/check-login")
+    @GetMapping("/api/transform-link/admin/v1/user/check-login")
     public Result<Boolean> checkLogin(UserCheckLoginReqDTO requestParam){
         return Results.success(userService.checkLogin(requestParam));
     }
@@ -82,7 +82,7 @@ public class UserController {
     /**
      * 注销用户
      */
-    @DeleteMapping("/api/transform-link/v1/user")
+    @DeleteMapping("/api/transform-link/admin/v1/user")
     public Result<Void> logout(UserLogoutReqDTO requestParam){
         userService.logout(requestParam);
         return Results.success();

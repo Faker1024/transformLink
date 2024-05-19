@@ -25,7 +25,7 @@ public class GroupController {
     /**
      * 新增组名
      */
-    @PostMapping("/api/transform-link/v1/group")
+    @PostMapping("/api/transform-link/admin/v1/group")
     public Result<Void> save(@RequestBody GroupSaveReqDTO requestParam){
         groupService.saveGroup(requestParam);
         return Results.success();
@@ -34,7 +34,7 @@ public class GroupController {
     /**
      *  查询个人所拥有的分组名称
      */
-    @GetMapping("/api/transform-link/v1/group")
+    @GetMapping("/api/transform-link/admin/v1/group")
     public Result<List<GroupSearchRespDTO>> search(){
         return Results.success(groupService.searchGroup());
     }
@@ -42,7 +42,7 @@ public class GroupController {
     /**
      * 更新分组信息
      */
-    @PutMapping("/api/transform-link/v1/group")
+    @PutMapping("/api/transform-link/admin/v1/group")
     public Result<Void> update(@RequestBody GroupUpdateReqDTO requestParam){
         groupService.updateGroup(requestParam);
         return Results.success();
@@ -51,7 +51,7 @@ public class GroupController {
     /**
      * 删除分组
      */
-    @DeleteMapping("/api/transform-link/v1/group")
+    @DeleteMapping("/api/transform-link/admin/v1/group")
     public Result<Boolean> delete(@RequestParam String gid){
         return Results.success(groupService.deleteGroup(gid));
     }
@@ -59,7 +59,7 @@ public class GroupController {
     /**
      * 短连接分组排序
      */
-    @PostMapping("/api/transform-link/v1/group/sort")
+    @PostMapping("/api/transform-link/admin/v1/group/sort")
     public  Result<Void> sortGroup(@RequestBody List<GroupSortReqDTO> requestParam){
         groupService.sortGroup(requestParam);
         return Results.success();
