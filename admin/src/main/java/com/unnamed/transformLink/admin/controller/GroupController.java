@@ -61,7 +61,8 @@ public class GroupController {
      */
     @PostMapping("/api/transform-link/v1/group/sort")
     public  Result<Void> sortGroup(@RequestBody List<GroupSortReqDTO> requestParam){
-        return Results.success(groupService.sortGroup(requestParam));
+        groupService.sortGroup(requestParam);
+        return Results.success();
     }
 
 
