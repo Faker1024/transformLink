@@ -60,12 +60,12 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
             if (baseMapper.selectCount(eq) > 0){
                 log.error("短連接{}重複入庫", fullShortLink);
                 throw new ServiceException("短連接生成重複");
-            }else{}
+            }
         }
         bloomFilter.add(fullShortLink);
         return LinkCreateRespDTO.builder()
                 .originUrl(linkDO.getOriginUrl())
-                .fullShortUrl("http://" + linkDO.getFullShortUrl())
+                .fullShortUrl(linkDO.getFullShortUrl())
                 .gid(linkDO.getGid())
                 .build();
     }
@@ -78,7 +78,7 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
             String originUrl = requestParam.getOriginUrl();
             originUrl += UUID.randomUUID().toString();
             linkSuffix = HashUtil.hashToBase62(originUrl);
-            if (!bloomFilter.contains(createTransformLinkDefaultDomain + "/" + linkSuffix)) {break;}
+            if (!bloomFilter.contains(createTransformLinkDefaultDomain + "/" + linkSuffix)) break;
             generateCount++;
         }
         return linkSuffix;

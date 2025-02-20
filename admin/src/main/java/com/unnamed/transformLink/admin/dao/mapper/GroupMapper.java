@@ -10,7 +10,7 @@ import java.util.List;
  * 分组持久层
  */
 public interface GroupMapper extends BaseMapper<GroupDO> {
-    @Update("")
+
     void batchUpdate(List<GroupDO> list);
 
 }
