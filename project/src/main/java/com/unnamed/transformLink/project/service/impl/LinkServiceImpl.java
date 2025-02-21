@@ -80,7 +80,8 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
         LambdaQueryWrapper<LinkDO> wrapper = Wrappers.lambdaQuery(LinkDO.class)
                 .eq(LinkDO::getGid, requestParam.getGid())
                 .eq(LinkDO::getDelFlag, 0)
-                .eq(LinkDO::getEnableStatus, 1);
+                .eq(LinkDO::getEnableStatus, 1)
+                .orderByDesc(LinkDO::getCreateTime);
         IPage<LinkDO> resultPage = baseMapper.selectPage(requestParam, wrapper);
         return resultPage.convert(each -> BeanUtil.copyProperties(each, LinkPageRespDTO.class));
     }
