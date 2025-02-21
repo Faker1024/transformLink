@@ -1,14 +1,18 @@
 package com.unnamed.transformLink.project.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.StrBuilder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.unnamed.transformLink.project.comoon.convention.exception.ServiceException;
 import com.unnamed.transformLink.project.dao.entity.LinkDO;
 import com.unnamed.transformLink.project.dao.mapper.LinkMapper;
 import com.unnamed.transformLink.project.dto.req.LinkCreateReqDTO;
+import com.unnamed.transformLink.project.dto.req.LinkPageReqDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCreateRespDTO;
+import com.unnamed.transformLink.project.dto.resp.LinkPageRespDTO;
 import com.unnamed.transformLink.project.service.LinkService;
 import com.unnamed.transformLink.project.toolkit.HashUtil;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +52,7 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
                 .gid(requestParam.getGid())
                 .validDateType(requestParam.getValidDateType())
                 .validDate(requestParam.getValidDate())
+                .enableStatus(1)
                 .fullShortUrl(fullShortLink)
                 .shortUri(shortLinkSuffix)
                 .build();
@@ -68,6 +73,16 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
                 .fullShortUrl(linkDO.getFullShortUrl())
                 .gid(linkDO.getGid())
                 .build();
+    }
+
+    @Override
+    public IPage<LinkPageRespDTO> pageLink(LinkPageReqDTO requestParam) {
+        LambdaQueryWrapper<LinkDO> wrapper = Wrappers.lambdaQuery(LinkDO.class)
+                .eq(LinkDO::getGid, requestParam.getGid())
+                .eq(LinkDO::getDelFlag, 0)
+                .eq(LinkDO::getEnableStatus, 1);
+        IPage<LinkDO> resultPage = baseMapper.selectPage(requestParam, wrapper);
+        return resultPage.convert(each -> BeanUtil.copyProperties(each, LinkPageRespDTO.class));
     }
 
     public String generateLinkSuffix(LinkCreateReqDTO requestParam) {
