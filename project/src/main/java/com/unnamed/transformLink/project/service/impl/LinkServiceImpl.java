@@ -3,6 +3,7 @@ package com.unnamed.transformLink.project.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.StrBuilder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -11,6 +12,7 @@ import com.unnamed.transformLink.project.dao.entity.LinkDO;
 import com.unnamed.transformLink.project.dao.mapper.LinkMapper;
 import com.unnamed.transformLink.project.dto.req.LinkCreateReqDTO;
 import com.unnamed.transformLink.project.dto.req.LinkPageReqDTO;
+import com.unnamed.transformLink.project.dto.resp.LinkCountGroupQueryRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCreateRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkPageRespDTO;
 import com.unnamed.transformLink.project.service.LinkService;
@@ -22,6 +24,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,6 +37,8 @@ import java.util.UUID;
 public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements LinkService {
 
     private final RBloomFilter<String> bloomFilter;
+
+    private LinkMapper linkMapper;
 
     @Value("${transform-link.domain.default}")
     private String createTransformLinkDefaultDomain;
@@ -85,6 +91,18 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
         IPage<LinkDO> resultPage = baseMapper.selectPage(requestParam, wrapper);
         return resultPage.convert(each -> BeanUtil.copyProperties(each, LinkPageRespDTO.class));
     }
+
+    @Override
+    public List<LinkCountGroupQueryRespDTO> listGroupLinkCount(List<String> gids) {
+        QueryWrapper<LinkDO> wrapper = Wrappers.query(new LinkDO())
+                .select("gid as gid, count(*) as linkCount")
+                .in("gid", gids)
+                .eq("enable_status", 1)
+                .groupBy("gid");
+        List<Map<String, Object>> linkCountList = baseMapper.selectMaps(wrapper);
+        return BeanUtil.copyToList(linkCountList, LinkCountGroupQueryRespDTO.class);
+    }
+
 
     public String generateLinkSuffix(LinkCreateReqDTO requestParam) {
         int generateCount = 0;

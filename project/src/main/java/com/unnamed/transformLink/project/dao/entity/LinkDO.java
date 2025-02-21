@@ -3,8 +3,10 @@ package com.unnamed.transformLink.project.dao.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.unnamed.transformLink.project.comoon.database.BaseDO;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
@@ -15,6 +17,8 @@ import java.util.Date;
 @Data
 @Builder
 @Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("t_link")
 public class LinkDO extends BaseDO {
 

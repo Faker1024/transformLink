@@ -4,10 +4,6 @@ import lombok.Data;
 
 @Data
 public class GroupSearchRespDTO {
-    /**
-     * id
-     */
-    private Long id;
 
     /**
      * 分组标识
@@ -23,4 +19,14 @@ public class GroupSearchRespDTO {
      * 创建分组用户名
      */
     private String username;
+
+    /**
+     * 分组排序
+     */
+    private Integer sortOrder;
+
+    /**
+     * 分组下短链接数量
+     */
+    private Integer shortLinkCount;
 }

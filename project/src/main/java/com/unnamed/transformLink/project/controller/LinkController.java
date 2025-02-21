@@ -5,14 +5,14 @@ import com.unnamed.transformLink.project.comoon.convention.result.Result;
 import com.unnamed.transformLink.project.comoon.convention.result.Results;
 import com.unnamed.transformLink.project.dto.req.LinkCreateReqDTO;
 import com.unnamed.transformLink.project.dto.req.LinkPageReqDTO;
+import com.unnamed.transformLink.project.dto.resp.LinkCountGroupQueryRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCreateRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkPageRespDTO;
 import com.unnamed.transformLink.project.service.LinkService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 连接控制层
@@ -34,6 +34,14 @@ public class LinkController {
     @GetMapping("/api/transform-link/project/v1/link/page")
     public Result<IPage<LinkPageRespDTO>> pageLink(LinkPageReqDTO requestParam){
         return Results.success(linkService.pageLink(requestParam));
+    }
+
+    /**
+     * 查询短链接分组数量
+     */
+    @GetMapping("/api/transform-link/project/v1/link/count")
+    public Result<List<LinkCountGroupQueryRespDTO>> listGroupLinkCount(@RequestParam List<String> requestParam){
+        return Results.success(linkService.listGroupLinkCount(requestParam));
     }
 
 
