@@ -69,9 +69,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             if (!lock.tryLock()) {
                 throw new ClientException(USER_EXIST);
             }
-            int inserted = baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
-            if (inserted < 1) {
+            int inserted;
+            try{
+                inserted = baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
+            }catch (Exception e){
                 throw new ClientException(USER_EXIST);
+            }
+            if (inserted < 1) {
+                throw new ClientException(USER_SAVE_ERROR);
             }
             userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
         }finally {
