@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
 #    对Driver自定义，实现分库分表等隐藏逻辑
-    url: jdbc:shardingsphere:classpath:shardingsphere-config.yaml
+    url: jdbc:shardingsphere:classpath:shardingsphere-config-${database.env:dev}.yaml
 #    ShardingSphere配置文件路径
     driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
   data:
