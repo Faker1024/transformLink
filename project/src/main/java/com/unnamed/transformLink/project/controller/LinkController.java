@@ -23,6 +23,9 @@ public class LinkController {
 
     private final LinkService linkService;
 
+    /**
+     * 创建短链接
+     */
     @PostMapping("/api/transform-link/project/v1/link/create")
     public Result<LinkCreateRespDTO> createLink(@RequestBody LinkCreateReqDTO requestParam){
         return Results.success(linkService.createLink(requestParam));
