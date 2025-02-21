@@ -11,6 +11,7 @@ CREATE TABLE `t_link_%d` (
   `origin_url` varchar(1024) DEFAULT NULL COMMENT '原始链接',
   `click_num` int DEFAULT '0' COMMENT '点击量',
   `gid` varchar(32) DEFAULT NULL COMMENT '分组标识',
+  `favicon` varchar(256) DEFAULT NULL COMMENT '网站图标',
   `enable_status` tinyint(1) DEFAULT NULL COMMENT '启用标识 0：未启用 1：已启用',
   `created_type` tinyint(1) DEFAULT NULL COMMENT '创建类型 0：控制台 1：接口',
   `valid_date_type` tinyint(1) DEFAULT NULL COMMENT '有效期类型 0：永久有效 1：用户自定义',
@@ -22,7 +23,6 @@ CREATE TABLE `t_link_%d` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique_full_short_uri` (`full_short_url`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1802228980586303490 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-                        
             """;
 
     public static void main(String[] args) {
