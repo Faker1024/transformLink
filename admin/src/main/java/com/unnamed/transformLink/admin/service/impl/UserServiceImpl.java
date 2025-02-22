@@ -13,6 +13,7 @@ import com.unnamed.transformLink.admin.dao.mapper.UserMapper;
 import com.unnamed.transformLink.admin.dto.req.*;
 import com.unnamed.transformLink.admin.dto.resp.UserLoginRespDTO;
 import com.unnamed.transformLink.admin.dto.resp.UserRespDTO;
+import com.unnamed.transformLink.admin.service.GroupService;
 import com.unnamed.transformLink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private final StringRedisTemplate stringRedisTemplate;
     private final DefaultRedisScript<Boolean> userLoginRedisScript;
     private final DefaultRedisScript<Boolean> userLoginOutRedisScript;
+    private final GroupService groupService;
 
     @Override
     public UserRespDTO getUserByUsername(String username) {
@@ -79,6 +81,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 throw new ClientException(USER_SAVE_ERROR);
             }
             userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
+            groupService.saveGroup(new GroupSaveReqDTO("默认分组"));
+
         }finally {
             lock.unlock();
         }
