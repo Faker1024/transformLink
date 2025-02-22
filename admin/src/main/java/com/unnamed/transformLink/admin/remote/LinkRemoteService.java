@@ -46,7 +46,7 @@ public interface LinkRemoteService {
     }
 
     default void updateLink(LinkUpdateReqDTO requestParam){
-        String resultStr = HttpUtil.createPost("http://127.0.0.1:8001/api/transform-link/project/v1/link/update")
+        HttpUtil.createPost("http://127.0.0.1:8001/api/transform-link/project/v1/link/update")
                 .header("Content-Type", "application/json")
                 .body(JSON.toJSONString(requestParam)).execute().body();
     };

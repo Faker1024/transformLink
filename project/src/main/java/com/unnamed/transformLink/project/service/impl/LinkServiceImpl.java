@@ -132,7 +132,7 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
                 .validDateType(requestParam.getValidDateType()).build();
         LambdaUpdateWrapper<LinkDO> updateWrapper = Wrappers.lambdaUpdate(LinkDO.class)
                 .eq(LinkDO::getGid, requestParam.getGid())
-                .eq(LinkDO::getFullShortUrl, requestParam.getOriginUrl())
+                .eq(LinkDO::getFullShortUrl, requestParam.getFullShortUrl())
                 .eq(LinkDO::getDelFlag, 0)
                 .eq(LinkDO::getEnableStatus, 1)
                 .set(Objects.equals(requestParam.getValidDateType(), VailDateTypeEnum.PERMANENT.getType()), LinkDO::getValidDate, null);
