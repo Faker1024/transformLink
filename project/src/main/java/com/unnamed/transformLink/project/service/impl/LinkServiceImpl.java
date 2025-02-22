@@ -4,14 +4,18 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.StrBuilder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.unnamed.transformLink.project.comoon.convention.exception.ClientException;
 import com.unnamed.transformLink.project.comoon.convention.exception.ServiceException;
+import com.unnamed.transformLink.project.comoon.enums.VailDateTypeEnum;
 import com.unnamed.transformLink.project.dao.entity.LinkDO;
 import com.unnamed.transformLink.project.dao.mapper.LinkMapper;
 import com.unnamed.transformLink.project.dto.req.LinkCreateReqDTO;
 import com.unnamed.transformLink.project.dto.req.LinkPageReqDTO;
+import com.unnamed.transformLink.project.dto.req.LinkUpdateReqDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCountGroupQueryRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCreateRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkPageRespDTO;
@@ -23,9 +27,11 @@ import org.redisson.api.RBloomFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -48,7 +54,7 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
         String shortLinkSuffix = generateLinkSuffix(requestParam);
         String fullShortLink = StrBuilder.create("http://")
                 .append(createTransformLinkDefaultDomain)
-                .append( "/")
+                .append("/")
                 .append(shortLinkSuffix)
                 .toString();
         LinkDO linkDO = LinkDO.builder().originUrl(requestParam.getOriginUrl())
@@ -64,11 +70,11 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
                 .build();
         try {
             baseMapper.insert(linkDO);
-        }catch (DuplicateKeyException es){
+        } catch (DuplicateKeyException es) {
             LambdaQueryWrapper<LinkDO> eq = Wrappers.lambdaQuery(LinkDO.class)
                     .eq(LinkDO::getOriginUrl, linkDO.getOriginUrl())
                     .eq(LinkDO::getDelFlag, 0);
-            if (baseMapper.selectCount(eq) > 0){
+            if (baseMapper.selectCount(eq) > 0) {
                 log.error("短連接{}重複入庫", fullShortLink);
                 throw new ServiceException("短連接生成重複");
             }
@@ -101,6 +107,36 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, LinkDO> implements 
                 .groupBy("gid");
         List<Map<String, Object>> linkCountList = baseMapper.selectMaps(wrapper);
         return BeanUtil.copyToList(linkCountList, LinkCountGroupQueryRespDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public void updateLink(LinkUpdateReqDTO requestParam) {
+        LambdaUpdateWrapper<LinkDO> queryWrapper = Wrappers.lambdaUpdate(LinkDO.class)
+                .eq(LinkDO::getGid, requestParam.getGid())
+                .eq(LinkDO::getFullShortUrl, requestParam.getFullShortUrl())
+                .eq(LinkDO::getDelFlag, 0)
+                .eq(LinkDO::getEnableStatus, 1);
+        LinkDO linkDO = baseMapper.selectOne(queryWrapper);
+        if (Objects.isNull(linkDO)) throw new ClientException("短链接记录不存在");
+        LinkDO updateDO = LinkDO.builder()
+                .domain(linkDO.getDomain())
+                .shortUri(linkDO.getShortUri())
+                .clickNum(linkDO.getClickNum())
+                .favicon(linkDO.getFavicon())
+                .createdType(linkDO.getCreatedType())
+                .gid(requestParam.getGid())
+                .originUrl(requestParam.getOriginUrl())
+                .describe(requestParam.getDescribe())
+                .validDate(requestParam.getValidDate())
+                .validDateType(requestParam.getValidDateType()).build();
+        LambdaUpdateWrapper<LinkDO> updateWrapper = Wrappers.lambdaUpdate(LinkDO.class)
+                .eq(LinkDO::getGid, requestParam.getGid())
+                .eq(LinkDO::getFullShortUrl, requestParam.getOriginUrl())
+                .eq(LinkDO::getDelFlag, 0)
+                .eq(LinkDO::getEnableStatus, 1)
+                .set(Objects.equals(requestParam.getValidDateType(), VailDateTypeEnum.PERMANENT.getType()), LinkDO::getValidDate, null);
+        baseMapper.update(updateDO, updateWrapper);
     }
 
 

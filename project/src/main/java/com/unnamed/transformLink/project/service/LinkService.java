@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.unnamed.transformLink.project.dao.entity.LinkDO;
 import com.unnamed.transformLink.project.dto.req.LinkCreateReqDTO;
 import com.unnamed.transformLink.project.dto.req.LinkPageReqDTO;
+import com.unnamed.transformLink.project.dto.req.LinkUpdateReqDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCountGroupQueryRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCreateRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkPageRespDTO;
@@ -18,4 +19,6 @@ public interface LinkService extends IService<LinkDO> {
 
 
     List<LinkCountGroupQueryRespDTO> listGroupLinkCount(List<String> gids);
+
+    void updateLink(LinkUpdateReqDTO requestParam);
 }

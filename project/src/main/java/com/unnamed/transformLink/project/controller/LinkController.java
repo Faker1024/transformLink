@@ -5,6 +5,7 @@ import com.unnamed.transformLink.project.comoon.convention.result.Result;
 import com.unnamed.transformLink.project.comoon.convention.result.Results;
 import com.unnamed.transformLink.project.dto.req.LinkCreateReqDTO;
 import com.unnamed.transformLink.project.dto.req.LinkPageReqDTO;
+import com.unnamed.transformLink.project.dto.req.LinkUpdateReqDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCountGroupQueryRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkCreateRespDTO;
 import com.unnamed.transformLink.project.dto.resp.LinkPageRespDTO;
@@ -29,6 +30,12 @@ public class LinkController {
     @PostMapping("/api/transform-link/project/v1/link/create")
     public Result<LinkCreateRespDTO> createLink(@RequestBody LinkCreateReqDTO requestParam){
         return Results.success(linkService.createLink(requestParam));
+    }
+
+    @PostMapping("/api/transform-link/project/v1/link/update")
+    public Result<Void> updateLink(@RequestBody LinkUpdateReqDTO requestParam){
+        linkService.updateLink(requestParam);
+        return Results.success();
     }
 
     /**
