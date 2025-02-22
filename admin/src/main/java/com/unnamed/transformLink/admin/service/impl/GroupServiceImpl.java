@@ -20,10 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -48,7 +45,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     public void saveGroup(String username, String groupName) {
         String gid = RandomGenerator.generateRandom();
         if (StringUtils.isBlank(username)) username = UserContext.getUsername();
-        while (hasGid(gid)) {gid = RandomGenerator.generateRandom();}
+        while (hasGid(username, gid)) {gid = RandomGenerator.generateRandom();}
         GroupDO groupDO = GroupDO.builder()
                 .name(groupName)
                 .username(username)
@@ -110,10 +107,12 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
         });
     }
 
-    private boolean hasGid(String gid) {
+    private boolean hasGid(String username,String gid) {
         GroupDO one = baseMapper.selectOne(Wrappers.lambdaQuery(GroupDO.class)
-                .eq(GroupDO::getDelFlag, 1)
-                .eq(GroupDO::getGid, gid));
+                .eq(GroupDO::getDelFlag, 0)
+                .eq(GroupDO::getGid, gid)
+                .eq(GroupDO::getUsername, Optional.ofNullable(username).orElse(UserContext.getUsername()))
+        );
         return one != null;
     }
 }
