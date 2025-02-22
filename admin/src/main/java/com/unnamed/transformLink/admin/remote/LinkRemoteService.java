@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.unnamed.transformLink.admin.comoon.convention.result.Result;
 import com.unnamed.transformLink.admin.remote.dto.req.LinkCreateReqDTO;
 import com.unnamed.transformLink.admin.remote.dto.req.LinkPageReqDTO;
+import com.unnamed.transformLink.admin.remote.dto.req.LinkUpdateReqDTO;
 import com.unnamed.transformLink.admin.remote.dto.resp.LinkCountGroupQueryRespDTO;
 import com.unnamed.transformLink.admin.remote.dto.resp.LinkCreateRespDTO;
 import com.unnamed.transformLink.admin.remote.dto.resp.LinkPageRespDTO;
@@ -44,4 +45,9 @@ public interface LinkRemoteService {
         return JSON.parseObject(resultStr, new TypeReference<>() {});
     }
 
+    default void updateLink(LinkUpdateReqDTO requestParam){
+        String resultStr = HttpUtil.createPost("http://127.0.0.1:8001/api/transform-link/project/v1/link/update")
+                .header("Content-Type", "application/json")
+                .body(JSON.toJSONString(requestParam)).execute().body();
+    };
 }
