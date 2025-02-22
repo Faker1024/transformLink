@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.unnamed.transformLink.admin.comoon.biz.user.UserContext;
+import com.unnamed.transformLink.admin.comoon.convention.result.Result;
 import com.unnamed.transformLink.admin.dao.entity.GroupDO;
 import com.unnamed.transformLink.admin.dao.mapper.GroupMapper;
 import com.unnamed.transformLink.admin.dto.req.GroupSaveReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupSortReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.GroupSearchRespDTO;
+import com.unnamed.transformLink.admin.remote.LinkRemoteService;
+import com.unnamed.transformLink.admin.remote.dto.resp.LinkCountGroupQueryRespDTO;
 import com.unnamed.transformLink.admin.service.GroupService;
 import com.unnamed.transformLink.admin.toolkit.RandomGenerator;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -30,6 +35,9 @@ import java.util.List;
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
 
     private GroupMapper groupMapper;
+
+    private final LinkRemoteService linkRemoteService = new LinkRemoteService() {
+    };
 
     @Override
     public void saveGroup(GroupSaveReqDTO requestParam) {
@@ -48,12 +56,17 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     @Override
     public List<GroupSearchRespDTO> searchGroup() {
         String username = UserContext.getUsername();
-        List<GroupDO> result = baseMapper.selectList(Wrappers.lambdaQuery(GroupDO.class)
+        List<GroupDO> groupDOList = baseMapper.selectList(Wrappers.lambdaQuery(GroupDO.class)
                 .eq(GroupDO::getDelFlag, 0)
                 .eq(GroupDO::getUsername, username)
                 .orderByDesc(GroupDO::getSortOrder, GroupDO::getUpdateTime)
         );
-        return BeanUtil.copyToList(result, GroupSearchRespDTO.class);
+        Result<List<LinkCountGroupQueryRespDTO>> listResult = linkRemoteService.listGroupLinkCount(groupDOList.stream().map(GroupDO::getGid).toList());
+        Map<String, Integer> countMap = new HashMap<>();
+        listResult.getData().forEach(each -> countMap.put(each.getGid(), each.getLinkCount()));
+        List<GroupSearchRespDTO> result = BeanUtil.copyToList(groupDOList, GroupSearchRespDTO.class);
+        result.stream().forEach(each -> {each.setShortLinkCount(countMap.get(each.getGid()));});
+        return result;
     }
 
     @Override
