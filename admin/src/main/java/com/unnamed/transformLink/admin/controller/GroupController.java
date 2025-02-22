@@ -27,7 +27,7 @@ public class GroupController {
      */
     @PostMapping("/api/transform-link/admin/v1/group")
     public Result<Void> save(@RequestBody GroupSaveReqDTO requestParam){
-        groupService.saveGroup(requestParam);
+        groupService.saveGroup(requestParam.getName());
         return Results.success();
     }
 

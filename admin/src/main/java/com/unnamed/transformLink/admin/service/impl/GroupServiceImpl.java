@@ -2,13 +2,13 @@ package com.unnamed.transformLink.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.unnamed.transformLink.admin.comoon.biz.user.UserContext;
 import com.unnamed.transformLink.admin.comoon.convention.result.Result;
 import com.unnamed.transformLink.admin.dao.entity.GroupDO;
 import com.unnamed.transformLink.admin.dao.mapper.GroupMapper;
-import com.unnamed.transformLink.admin.dto.req.GroupSaveReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupSortReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.GroupSearchRespDTO;
@@ -40,12 +40,17 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     };
 
     @Override
-    public void saveGroup(GroupSaveReqDTO requestParam) {
+    public void saveGroup(String groupName) {
+        saveGroup(null, groupName);
+    }
+
+    @Override
+    public void saveGroup(String username, String groupName) {
         String gid = RandomGenerator.generateRandom();
-        String username = UserContext.getUsername();
+        if (StringUtils.isBlank(username)) username = UserContext.getUsername();
         while (hasGid(gid)) {gid = RandomGenerator.generateRandom();}
         GroupDO groupDO = GroupDO.builder()
-                .name(requestParam.getName())
+                .name(groupName)
                 .username(username)
                 .sortOrder(0)
                 .gid(gid)

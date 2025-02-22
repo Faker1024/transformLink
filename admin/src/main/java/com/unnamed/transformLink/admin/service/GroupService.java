@@ -2,7 +2,6 @@ package com.unnamed.transformLink.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.unnamed.transformLink.admin.dao.entity.GroupDO;
-import com.unnamed.transformLink.admin.dto.req.GroupSaveReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupSortReqDTO;
 import com.unnamed.transformLink.admin.dto.req.GroupUpdateReqDTO;
 import com.unnamed.transformLink.admin.dto.resp.GroupSearchRespDTO;
@@ -19,7 +18,14 @@ public interface GroupService extends IService<GroupDO> {
      * 新增短链接分组名
      * @param groupName 组名
      */
-    void saveGroup(GroupSaveReqDTO groupName);
+    void saveGroup(String groupName);
+
+    /**
+     * 新增短链接分组名
+     * @param username 用户名
+     * @param groupName 组名
+     */
+    void saveGroup(String username, String groupName);
 
     /**
      * 查询用户创建的分组
